@@ -3,7 +3,8 @@ import {
   FETCH_POST_SUCCESS,
   FETCH_POST_FAILURE,
   SUBMIT_POST_REQUEST,
-  SUBMIT_POST_FAILURE
+  SUBMIT_POST_FAILURE,
+  SUBMIT_POST_SUCCESS
 } from "./actionType";
 
 export interface IPost {
@@ -60,13 +61,10 @@ export interface SubmitPostState {
 
 export interface SubmitPostRequest {
   type: typeof SUBMIT_POST_REQUEST;
-}
-export interface SubmitPostSuccessPayload {
-  post: IPost;
+  args: IPost,
 }
 export type SubmitPostSuccess = {
-  type: typeof FETCH_POST_FAILURE;
-  payload: FetchPostFailurePayload;
+  type: typeof SUBMIT_POST_SUCCESS;
 };
 
 
@@ -74,6 +72,8 @@ export type SubmitPostFailure = {
   type: typeof SUBMIT_POST_FAILURE;
   payload: FetchPostFailurePayload;
 };
+
+
 
 export type SubmitActions =
   | SubmitPostRequest

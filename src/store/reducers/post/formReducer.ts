@@ -12,7 +12,7 @@ const initialState: SubmitPostState = {
     post: {
         title: "",
         body: "",
-       },
+    },
     error: null,
 };
 
@@ -23,7 +23,14 @@ export default (state = initialState, action: SubmitActions) => {
                 ...state,
                 pending: true,
             };
-    
+
+        case SUBMIT_POST_FAILURE:
+            return {
+                ...state,
+                pending: false,
+                error: action.payload.error,
+            };
+
         default:
             return {
                 ...state,
