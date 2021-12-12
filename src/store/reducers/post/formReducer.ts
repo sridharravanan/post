@@ -7,12 +7,9 @@ import {
 import { SubmitActions, SubmitPostState } from "../../actions/post/type";
 
 
-const initialState: SubmitPostState = {
+export const initialState: SubmitPostState = {
     pending: false,
-    post: {
-        title: "",
-        body: "",
-    },
+    post: { id: 0, userId: 0, title: "", body: "" },
     error: null,
 };
 
@@ -30,7 +27,12 @@ export default (state = initialState, action: SubmitActions) => {
                 pending: false,
                 error: action.payload.error,
             };
-
+        case SUBMIT_POST_SUCCESS:
+            return {
+                ...state,
+                pending: false,
+                error: [],
+            };
         default:
             return {
                 ...state,

@@ -4,7 +4,10 @@ import {
   FETCH_POST_FAILURE,
   SUBMIT_POST_REQUEST,
   SUBMIT_POST_FAILURE,
-  SUBMIT_POST_SUCCESS
+  SUBMIT_POST_SUCCESS,
+  DELETE_POST_REQUEST,
+  DELETE_POST_SUCCESS,
+  DELETE_POST_FAILURE
 } from "./actionType";
 
 export interface IPost {
@@ -44,10 +47,6 @@ export type FetchPostFailure = {
   payload: FetchPostFailurePayload;
 };
 
-export type PostActions =
-  | FetchPostRequest
-  | FetchPostSuccess
-  | FetchPostFailure;
 
 
 
@@ -74,8 +73,29 @@ export type SubmitPostFailure = {
 };
 
 
-
 export type SubmitActions =
   | SubmitPostRequest
   | SubmitPostSuccess
   | SubmitPostFailure;
+
+  export interface DeletePostRequest {
+    type: typeof DELETE_POST_REQUEST;
+    args: Number,
+  }
+  export type DeletePostSuccess = {
+    type: typeof DELETE_POST_SUCCESS;
+  };
+  
+  
+  export type DeletePostFailure = {
+    type: typeof DELETE_POST_FAILURE;
+    payload: FetchPostFailurePayload;
+  };
+
+  export type PostActions =
+  | FetchPostRequest
+  | FetchPostSuccess
+  | FetchPostFailure
+  | DeletePostRequest
+  | DeletePostSuccess
+  | DeletePostFailure;

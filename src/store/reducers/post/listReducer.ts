@@ -2,6 +2,9 @@ import {
     FETCH_POST_REQUEST,
     FETCH_POST_SUCCESS,
     FETCH_POST_FAILURE,
+    DELETE_POST_REQUEST,
+    DELETE_POST_SUCCESS,
+    DELETE_POST_FAILURE
   } from "../../actions/post/actionType";
   
   import { PostActions, PostState } from "../../actions/post/type";
@@ -31,6 +34,23 @@ import {
           ...state,
           pending: false,
           posts: [],
+          error: action.payload.error,
+        };
+        case DELETE_POST_REQUEST:
+        return {
+          ...state,
+          pending: true
+        };
+        case DELETE_POST_SUCCESS:
+        return {
+          ...state,
+          pending: false,
+          error:null
+        };
+        case DELETE_POST_FAILURE:
+        return {
+          ...state,
+          pending: false,
           error: action.payload.error,
         };
       default:
