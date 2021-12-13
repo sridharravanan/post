@@ -4,7 +4,8 @@ import {
     FETCH_POST_FAILURE,
     DELETE_POST_REQUEST,
     DELETE_POST_SUCCESS,
-    DELETE_POST_FAILURE
+    DELETE_POST_FAILURE,
+    FETCH_POST_RESET
   } from "../../actions/post/actionType";
   
   import { PostActions, PostState } from "../../actions/post/type";
@@ -53,6 +54,8 @@ import {
           pending: false,
           error: action.payload.error,
         };
+        case FETCH_POST_RESET:
+          return initialState;
       default:
         return {
           ...state,

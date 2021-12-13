@@ -7,7 +7,8 @@ import {
     SUBMIT_POST_FAILURE,
     DELETE_POST_REQUEST,
     DELETE_POST_SUCCESS,
-    DELETE_POST_FAILURE
+    DELETE_POST_FAILURE,
+    FETCH_POST_RESET
   } from "./actionType";
   import {
     FetchPostRequest,
@@ -21,7 +22,8 @@ import {
     SubmitPostFailure,
     DeletePostRequest,
     DeletePostSuccess,
-    DeletePostFailure
+    DeletePostFailure,
+    FetchPostReset
   } from "./type";
   
   export const fetchPostRequest = (): FetchPostRequest => ({
@@ -66,4 +68,8 @@ export const deletePostSuccess = (): DeletePostSuccess => ({
 export const deletePostError = (payload: FetchPostFailurePayload): DeletePostFailure => ({
   type: DELETE_POST_FAILURE,
   payload,
+});
+
+export const fetchPostReset = (): FetchPostReset => ({
+  type: FETCH_POST_RESET,
 });
