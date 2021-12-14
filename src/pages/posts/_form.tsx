@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { IPost } from '../../store/actions/post/type';
 import { Container, Form, Button } from 'react-bootstrap';
-import { submitPostRequest } from "../../store/actions/post/actions";
+import { submitPostRequest,submitPostReset } from "../../store/actions/post/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 import { useParams,useNavigate } from 'react-router-dom';
@@ -14,27 +14,36 @@ function PostFrom() {
   const params = useParams()
 
   const dispatch = useDispatch();
-  const { pending, post, error } = useSelector(
+  const { pending, post, error,isSuccess } = useSelector(
     (state: RootState) => state.submit
   );
   const { posts } = useSelector(
     (state: RootState) => state.posts
   );
   const [postValue, setPost] = useState<IPost>(initialState.post);
-
+//#block for bind edit data...!
   useEffect(() => {
-
-    console.log(posts);
     if (params.index) {
       //posts
-
       let indexValue: number = parseInt(params.index);
       let post = posts[indexValue];
       if (post) {
         setPost(post);
       }
     }
-  }, [posts]);
+  }, []);
+  //#watcher for post after submit...!
+  useEffect(() => {
+    if( isSuccess ){
+      alert("S");
+      dispatch(submitPostReset());
+    }
+    if( isSuccess === false){
+      alert(isSuccess);
+      dispatch(submitPostReset());
+    }
+  },[isSuccess]);
+
   function postList() {
     navigate('/');
   }

@@ -13,8 +13,7 @@ import {
   const initialState: PostState = {
     pending: false,
     posts: [],
-    error: null,
-    isDeleted: false,
+    error: null
   };
   
   export default (state = initialState, action: PostActions) => {
@@ -55,6 +54,7 @@ import {
           ...state,
           pending: false,
           error: action.payload.error,
+          isDeleted:false
         };
         case FETCH_POST_RESET:
           return {...initialState};

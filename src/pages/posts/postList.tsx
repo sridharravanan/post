@@ -12,7 +12,7 @@ function PostLists() {
   // const { pending, posts, error } = useSelector(
   //   (state: RootState) => state.posts
   // );
-  const  posts = useSelector(
+  const  postData = useSelector(
       (state: RootState) => state.posts
     );
   function createPost() {
@@ -27,11 +27,11 @@ function PostLists() {
     }
   }
   useEffect(() => {
-    if(posts.isDeleted){
+    if(postData.isDeleted){
       dispatch(fetchPostReset());
       dispatch(fetchPostRequest());
     }
-  }, [posts.isDeleted]);
+  }, [postData.isDeleted]);
   useEffect(() => {
     dispatch(fetchPostRequest());
   }, []);
@@ -41,9 +41,9 @@ function PostLists() {
   return (
     <div className="container">
       <Button variant="outline-primary" onClick={createPost}>Add</Button>
-      {posts.pending ? (
+      {postData.pending ? (
         <div>Loading...</div>
-      ) : posts.error ? (
+      ) : postData.error ? (
         <div>Error</div>
       ) : (
         <Table striped bordered hover>
@@ -55,7 +55,7 @@ function PostLists() {
             </tr>
           </thead>
           <tbody>
-            {posts.posts?.map((post, index) => (
+            {postData.posts?.map((post, index) => (
               <tr key={post.id}>
                 <td>{++index}</td>
                 <td>

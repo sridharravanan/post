@@ -1,10 +1,10 @@
 import axios from "axios";
 import { all, call, put, takeLatest } from "redux-saga/effects";
 
-import { deletePostSuccess, fetchPostFailure, fetchPostSuccess } from "./actions";
+import { deletePostSuccess, fetchPostFailure, fetchPostSuccess, submitPostFailure, submitPostSuccess } from "./actions";
 import { FETCH_POST_REQUEST, SUBMIT_POST_REQUEST,DELETE_POST_REQUEST } from "./actionType";
 import { IPost, SubmitPostRequest,DeletePostRequest } from "./type";
-import { appUrl,defaultSucess,defaultErrorMessage } from '../../../config/constant'
+import { appUrl,defaultSucess,defaultErrorMessage,successHttpCodes } from '../../../config/constant'
 
 
 // AXIOS
@@ -15,30 +15,29 @@ axiosClient.defaults.baseURL = appUrl;
 const getPosts = () =>
   axiosClient.get('/posts');
 //axios.get<IPost[]>(appUrl + '/posts');
-function getErrorMessage(error:any){
-  let errorMessage:string = defaultErrorMessage;
-  if( error){
-    
-  }
-  return errorMessage;
+function getErrorMessage(response:any){
+  const responseError = response?.data?.error ? response?.data?.error : null;
+    const responseMsg = response?.data?.message ? response?.data?.message : null;
+    const unhandleErrorMsg = response?.message ? response?.message : null;
+    return responseError || responseMsg || unhandleErrorMsg || defaultErrorMessage;
 }
 /*
   Worker Saga: Fired on FETCH_POST_REQUEST action
 */
 function* fetchPostSaga(): any {
   try {
-    const response = yield call(getPosts);
-    yield put(
-      fetchPostSuccess({
-        posts: response.data,
-      })
-    );
+    let responce = yield call(getPosts);
+    if(successHttpCodes.includes(responce.status)){
+      yield put(
+        fetchPostSuccess({
+          posts: responce.data,
+        })
+      );
+    }else{
+      yield put(fetchPostFailure({ error: getErrorMessage(responce)}));    
+    }
   } catch (e) {
-    yield put(
-      fetchPostFailure({
-        error: "S",
-      })
-    );
+    yield put(fetchPostFailure({ error: getErrorMessage(e)}));    
   }
 }
 const insertPostsAsync = async (body: IPost) => {
@@ -53,23 +52,16 @@ const insertPostsAsync = async (body: IPost) => {
     body
   )
 }
-function* insertPostSaga(action: SubmitPostRequest) {
+function* insertPostSaga(action: SubmitPostRequest):any {
   try {
-    // const postModel = get(action, 'args');
-
-    yield call(insertPostsAsync, action.args);
-    
-    //yield call(fetchPostSaga);
+    let responce = yield call(insertPostsAsync, action.args);
+    if(successHttpCodes.includes(responce.status)){
+      yield put(submitPostSuccess());
+    }else{
+      yield put(submitPostFailure({ error: getErrorMessage(responce)}));
+    }
   } catch (ex: any) {
-    const error = {
-      type: ex.message, // something else can be configured here
-      message: ex.message,
-    };
-    yield put(
-      fetchPostFailure({
-        error: "S",
-      })
-    );
+    yield put(submitPostFailure({ error: getErrorMessage(ex)}));    
   }
 };
 const deletePostAsync = async (id: Number) => {
@@ -85,15 +77,11 @@ const deletePostAsync = async (id: Number) => {
   try {
 
       let responce = yield call(deletePostAsync, action.args);
-      if(responce.status == defaultSucess){
-        console.log(responce);
+      if(successHttpCodes.includes(responce.status)){
         yield put(deletePostSuccess());
       }else{
-        let errorMessage = getErrorMessage(responce);
-        yield put(fetchPostFailure({ error: errorMessage}));
-    
+        yield put(fetchPostFailure({ error: getErrorMessage(responce)}));
       }
-      
 
   } catch(error: any) {
       let errorMessage = getErrorMessage(error);

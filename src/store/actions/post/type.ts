@@ -8,7 +8,8 @@ import {
   DELETE_POST_REQUEST,
   DELETE_POST_SUCCESS,
   DELETE_POST_FAILURE,
-  FETCH_POST_RESET
+  FETCH_POST_RESET,
+  SUBMIT_POST_RESET
 } from "./actionType";
 
 export interface IPost {
@@ -23,7 +24,7 @@ export interface PostState {
   pending: boolean;
   posts: IPost[];
   error: string | null;
-  isDeleted:boolean;
+  isDeleted?: boolean;
 }
 
 export interface FetchPostSuccessPayload {
@@ -50,15 +51,35 @@ export type FetchPostFailure = {
   type: typeof FETCH_POST_FAILURE;
   payload: FetchPostFailurePayload;
 };
+export interface DeletePostRequest {
+  type: typeof DELETE_POST_REQUEST;
+  args: Number,
+}
+export type DeletePostSuccess = {
+  type: typeof DELETE_POST_SUCCESS;
+};
 
 
+export type DeletePostFailure = {
+  type: typeof DELETE_POST_FAILURE;
+  payload: FetchPostFailurePayload;
+};
 
+export type PostActions =
+  | FetchPostRequest
+  | FetchPostSuccess
+  | FetchPostFailure
+  | DeletePostRequest
+  | DeletePostSuccess
+  | DeletePostFailure
+  | FetchPostReset;
 
 //#submit
 export interface SubmitPostState {
   pending: boolean;
   post: IPost;
   error: string | null;
+  isSuccess?: Boolean
 }
 
 
@@ -75,32 +96,12 @@ export type SubmitPostFailure = {
   type: typeof SUBMIT_POST_FAILURE;
   payload: FetchPostFailurePayload;
 };
-
+export interface SubmitPostReset {
+  type: typeof SUBMIT_POST_RESET;
+}
 
 export type SubmitActions =
   | SubmitPostRequest
   | SubmitPostSuccess
-  | SubmitPostFailure;
-
-  export interface DeletePostRequest {
-    type: typeof DELETE_POST_REQUEST;
-    args: Number,
-  }
-  export type DeletePostSuccess = {
-    type: typeof DELETE_POST_SUCCESS;
-  };
-  
-  
-  export type DeletePostFailure = {
-    type: typeof DELETE_POST_FAILURE;
-    payload: FetchPostFailurePayload;
-  };
-
-  export type PostActions =
-  | FetchPostRequest
-  | FetchPostSuccess
-  | FetchPostFailure
-  | DeletePostRequest
-  | DeletePostSuccess
-  | DeletePostFailure
-  | FetchPostReset;
+  | SubmitPostFailure
+  | SubmitPostReset;
