@@ -14,6 +14,7 @@ import {
     pending: false,
     posts: [],
     error: null,
+    isDeleted: false,
   };
   
   export default (state = initialState, action: PostActions) => {
@@ -46,7 +47,8 @@ import {
         return {
           ...state,
           pending: false,
-          error:null
+          error:null,
+          isDeleted:true
         };
         case DELETE_POST_FAILURE:
         return {
@@ -55,7 +57,7 @@ import {
           error: action.payload.error,
         };
         case FETCH_POST_RESET:
-          return initialState;
+          return {...initialState};
       default:
         return {
           ...state,

@@ -23,6 +23,7 @@ export interface PostState {
   pending: boolean;
   posts: IPost[];
   error: string | null;
+  isDeleted:boolean;
 }
 
 export interface FetchPostSuccessPayload {

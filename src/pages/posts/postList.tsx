@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPostRequest, deletePostRequest } from "../../store/actions/post/actions";
+import {fetchPostReset, fetchPostRequest, deletePostRequest } from "../../store/actions/post/actions";
 import { RootState } from "../../store/rootReducer";
 import { Table, Button } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
@@ -9,9 +9,12 @@ import { IPost } from '../../store/actions/post/type';
 function PostLists() {
   const dispatch = useDispatch();
   let navigate = useNavigate();
-  const { pending, posts, error } = useSelector(
-    (state: RootState) => state.posts
-  );
+  // const { pending, posts, error } = useSelector(
+  //   (state: RootState) => state.posts
+  // );
+  const  posts = useSelector(
+      (state: RootState) => state.posts
+    );
   function createPost() {
     navigate('/post');
   }
@@ -24,6 +27,12 @@ function PostLists() {
     }
   }
   useEffect(() => {
+    if(posts.isDeleted){
+      dispatch(fetchPostReset());
+      dispatch(fetchPostRequest());
+    }
+  }, [posts.isDeleted]);
+  useEffect(() => {
     dispatch(fetchPostRequest());
   }, []);
 
@@ -32,9 +41,9 @@ function PostLists() {
   return (
     <div className="container">
       <Button variant="outline-primary" onClick={createPost}>Add</Button>
-      {pending ? (
+      {posts.pending ? (
         <div>Loading...</div>
-      ) : error ? (
+      ) : posts.error ? (
         <div>Error</div>
       ) : (
         <Table striped bordered hover>
@@ -46,7 +55,7 @@ function PostLists() {
             </tr>
           </thead>
           <tbody>
-            {posts?.map((post, index) => (
+            {posts.posts?.map((post, index) => (
               <tr key={post.id}>
                 <td>{++index}</td>
                 <td>
