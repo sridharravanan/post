@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 import { useParams,useNavigate } from 'react-router-dom';
 import { initialState } from "../../store/reducers/post/formReducer";
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 function PostFrom() {
   let navigate = useNavigate();
@@ -46,6 +47,9 @@ function PostFrom() {
 
   function postList() {
     navigate('/');
+  }
+  function hideAlert() {
+   console.log("ADDSas");
   }
   async function insertStudentAsync(value: IPost) {
     dispatch(submitPostRequest(value));
@@ -119,6 +123,13 @@ function PostFrom() {
 
   return (
     <div className="container">
+      <SweetAlert
+          success
+          title="Woot!"
+          onConfirm={hideAlert}
+      >
+        I did it!
+      </SweetAlert>
       <Button variant="outline-primary" onClick={postList}>Back</Button>
       <h1>{postValue && postValue.id ? "Edit " : "Add "}Post</h1>
       <PostFormView postValue={postValue} />
