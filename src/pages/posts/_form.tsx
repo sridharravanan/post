@@ -9,6 +9,7 @@ import { RootState } from "../../store/rootReducer";
 import { useParams,useNavigate } from 'react-router-dom';
 import { initialState } from "../../store/reducers/post/formReducer";
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { Swal } from '../../config/swalAlert';
 
 function PostFrom() {
   let navigate = useNavigate();
@@ -22,6 +23,7 @@ function PostFrom() {
     (state: RootState) => state.posts
   );
   const [postValue, setPost] = useState<IPost>(initialState.post);
+  const [showSwal, setShowSwal] = useState(false);
 //#block for bind edit data...!
   useEffect(() => {
     if (params.index) {
@@ -36,7 +38,7 @@ function PostFrom() {
   //#watcher for post after submit...!
   useEffect(() => {
     if( isSuccess ){
-      alert("S");
+      setShowSwal(true)
       dispatch(submitPostReset());
     }
     if( isSuccess === false){
@@ -123,13 +125,14 @@ function PostFrom() {
 
   return (
     <div className="container">
-      <SweetAlert
-          success
-          title="Woot!"
-          onConfirm={hideAlert}
-      >
-        I did it!
-      </SweetAlert>
+      {showSwal ? (<Swal
+          onCancel={() => {
+            console.log("hai");
+          }}
+          onConfirm={() => {
+            console.log("bye");
+          }}
+      ></Swal>): null}
       <Button variant="outline-primary" onClick={postList}>Back</Button>
       <h1>{postValue && postValue.id ? "Edit " : "Add "}Post</h1>
       <PostFormView postValue={postValue} />
