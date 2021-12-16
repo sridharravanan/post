@@ -4,7 +4,7 @@ import { all, call, put, takeLatest } from "redux-saga/effects";
 import { deletePostSuccess, fetchPostFailure, fetchPostSuccess, submitPostFailure, submitPostSuccess } from "./actions";
 import { FETCH_POST_REQUEST, SUBMIT_POST_REQUEST,DELETE_POST_REQUEST } from "./actionType";
 import { IPost, SubmitPostRequest,DeletePostRequest } from "./type";
-import { appUrl,defaultSucess,defaultErrorMessage,successHttpCodes } from '../../../config/constant'
+import { appUrl,defaultErrorMessage,successHttpCodes } from '../../../config/constant'
 
 
 // AXIOS
@@ -55,13 +55,14 @@ const insertPostsAsync = async (body: IPost) => {
 function* insertPostSaga(action: SubmitPostRequest):any {
   try {
     let responce = yield call(insertPostsAsync, action.args);
-    if(successHttpCodes.includes(responce.status)){
-      yield put(submitPostSuccess());
-    }else{
-      yield put(submitPostFailure({ error: getErrorMessage(responce)}));
-    }
+    // if(successHttpCodes.includes(responce.status)){
+    //   yield put(submitPostSuccess());
+    // }else{
+    //   yield put(submitPostFailure({ error: getErrorMessage(responce)}));
+    // }
+    // yield put(submitPostFailure({ error: getErrorMessage(responce)}));
   } catch (ex: any) {
-    yield put(submitPostFailure({ error: getErrorMessage(ex)}));    
+    // yield put(submitPostFailure({ error: getErrorMessage(ex)}));    
   }
 };
 const deletePostAsync = async (id: Number) => {

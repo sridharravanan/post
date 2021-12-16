@@ -10,6 +10,7 @@ import { useParams,useNavigate } from 'react-router-dom';
 import { initialState } from "../../store/reducers/post/formReducer";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { Swal } from '../../config/swalAlert';
+import { postSafeSuccessMessage } from '../../config/constant';
 
 function PostFrom() {
   let navigate = useNavigate();
@@ -22,8 +23,9 @@ function PostFrom() {
   const { posts } = useSelector(
     (state: RootState) => state.posts
   );
-  const [postValue, setPost] = useState<IPost>(initialState.post);
+  const [postValue, setPost] = useState<IPost>({ id: 0, userId: 0, title: "", body: "" });
   const [showSwal, setShowSwal] = useState(false);
+  const [swalTitle, setSwalTitle] = useState('');
 //#block for bind edit data...!
   useEffect(() => {
     if (params.index) {
@@ -38,14 +40,22 @@ function PostFrom() {
   //#watcher for post after submit...!
   useEffect(() => {
     if( isSuccess ){
+      setSwalTitle(postSafeSuccessMessage);  
       setShowSwal(true)
-      dispatch(submitPostReset());
     }
     if( isSuccess === false){
-      alert(isSuccess);
-      dispatch(submitPostReset());
+      setSwalTitle(error);
+      setShowSwal(true);
     }
   },[isSuccess]);
+
+  const modalClose = () => {
+    setShowSwal(false);
+  };
+  const onConfirm = ()=>{
+    setShowSwal(false);
+    //dispatch(submitPostReset());
+  };
 
   function postList() {
     navigate('/');
@@ -53,7 +63,7 @@ function PostFrom() {
   function hideAlert() {
    console.log("ADDSas");
   }
-  async function insertStudentAsync(value: IPost) {
+  async function insertPostAsync(value: IPost) {
     dispatch(submitPostRequest(value));
   
   }
@@ -119,19 +129,20 @@ function PostFrom() {
     ),
     handleSubmit: (values, { setSubmitting }) => {
       console.log(values);
-      insertStudentAsync(values)
+      insertPostAsync(values)
     },
   })(InnerForm);
 
   return (
     <div className="container">
       {showSwal ? (<Swal
-          onCancel={() => {
-            console.log("hai");
-          }}
-          onConfirm={() => {
-            console.log("bye");
-          }}
+          onCancel={onConfirm}
+          onConfirm={onConfirm}
+          title={swalTitle}
+          showCancel={false}
+          confirmBtnText="Ok"
+          cancelBtnText="cancel"
+          type="warning"
       ></Swal>): null}
       <Button variant="outline-primary" onClick={postList}>Back</Button>
       <h1>{postValue && postValue.id ? "Edit " : "Add "}Post</h1>

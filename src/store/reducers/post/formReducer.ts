@@ -10,7 +10,7 @@ import { SubmitActions, SubmitPostState } from "../../actions/post/type";
 
 export const initialState: SubmitPostState = {
     pending: false,
-    post: { id: 0, userId: 0, title: "", body: "" },
+    post: { id: 0, userId: 0, title: "Rav", body: "" },
     error: null
 };
 
@@ -19,6 +19,7 @@ export default (state = initialState, action: SubmitActions) => {
         case SUBMIT_POST_REQUEST:
             return {
                 ...state,
+                post:action.args,
                 pending: true,
             };
 
