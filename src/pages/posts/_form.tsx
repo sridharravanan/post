@@ -64,7 +64,9 @@ function PostFrom() {
    console.log("ADDSas");
   }
   async function insertPostAsync(value: IPost) {
+    console.log(value);
     dispatch(submitPostRequest(value));
+
   
   }
   interface intialValue {

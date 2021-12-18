@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PostLists from "./../pages/posts/postList";
 import PostForm from "../pages/posts/_form";
+import Dummy from "../pages/posts/dummy";
 
 
 
@@ -10,7 +11,7 @@ const Routers = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/about" element={<About />}></Route>
+        <Route path="/dummy" element={<Dummy />}></Route>
         <Route path="/post">
           <Route path=":index" element={<PostForm />} />
           <Route path="" element={<PostForm />} />
